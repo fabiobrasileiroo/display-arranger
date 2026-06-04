@@ -101,9 +101,9 @@ The UI never talks to `xrandr` directly — it goes through a `DisplayBackend` t
 # prerequisites: Rust (rustup), Node.js, and the Tauri Linux deps
 # (libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev patchelf)
 
-npm install
-npm run tauri dev      # run the app in dev mode
-npm test               # frontend (geometry) tests
+bun install
+bun run tauri dev      # run the app in dev mode
+bun run test           # frontend (geometry) tests
 cd src-tauri && cargo test && cargo clippy   # backend tests + lints
 ```
 

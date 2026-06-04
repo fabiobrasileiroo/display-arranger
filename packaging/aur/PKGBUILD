@@ -7,15 +7,15 @@ arch=('x86_64')
 url="https://github.com/fabiobrasileiroo/display-arranger"
 license=('MIT')
 depends=('webkit2gtk-4.1' 'gtk3' 'libxrandr' 'xorg-xrandr')
-makedepends=('rust' 'cargo' 'nodejs' 'npm' 'bun')
+makedepends=('rust' 'cargo' 'bun')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
 sha256sums=('SKIP')
 
 build() {
   cd "$pkgname-$pkgver"
-  npm install
+  bun install --frozen-lockfile
   # Build the binary without the bundler (no AppImage tooling needed here).
-  npm run tauri build -- --no-bundle
+  bun run tauri build -- --no-bundle
 }
 
 package() {
