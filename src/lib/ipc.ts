@@ -29,3 +29,18 @@ export const deleteProfile = (name: string) =>
 
 export const matchProfile = (connected: string[]) =>
   trackedInvoke<Profile | null>("match_profile", { connected })
+
+export interface UpdateInfo {
+  current: string
+  latest: string
+  updateAvailable: boolean
+  canSelfUpdate: boolean
+  releaseUrl: string
+  appimageUrl: string | null
+}
+
+export const checkUpdate = () => trackedInvoke<UpdateInfo>("check_update")
+
+export const applyUpdate = () => trackedInvoke<void>("apply_update")
+
+export const restartApp = () => trackedInvoke<void>("restart_app")

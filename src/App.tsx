@@ -4,6 +4,7 @@ import { MonitorCanvas } from "@/components/canvas/monitor-canvas"
 import { OutputPanel } from "@/components/controls/output-panel"
 import { ProfilesPanel } from "@/components/profiles/profiles-panel"
 import { RevertCountdown } from "@/components/revert-countdown"
+import { UpdateBanner } from "@/components/update-banner"
 import { Toaster } from "@/components/ui/sonner"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
@@ -14,6 +15,7 @@ export default function App() {
   return (
     <div className="flex h-svh flex-col bg-background text-foreground">
       <Toolbar m={m} />
+      <UpdateBanner m={m} />
 
       {m.error ? (
         <div className="border-b bg-destructive/10 px-4 py-2 text-sm text-destructive">

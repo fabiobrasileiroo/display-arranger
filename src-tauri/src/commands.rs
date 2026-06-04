@@ -5,6 +5,7 @@ use tauri::{AppHandle, State};
 use crate::apply::AppState;
 use crate::model::{Layout, Output};
 use crate::profiles::{self, Profile};
+use crate::update::{self, UpdateInfo};
 
 #[tauri::command]
 pub fn query_outputs(state: State<AppState>) -> Result<Vec<Output>, String> {
@@ -67,4 +68,27 @@ pub fn delete_profile(name: String) -> Result<(), String> {
 #[tauri::command]
 pub fn match_profile(connected: Vec<String>) -> Result<Option<Profile>, String> {
     profiles::match_for(&connected).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub async fn check_update() -> Result<UpdateInfo, String> {
+    tauri::async_runtime::spawn_blocking(update::check)
+        .await
+        .map_err(|e| e.to_string())?
+        .map_err(|e| e.to_string())
+}
+
+/// Download and install the latest AppImage in place. Caller should prompt a
+/// restart afterwards.
+#[tauri::command]
+pub async fn apply_update() -> Result<(), String> {
+    tauri::async_runtime::spawn_blocking(update::apply)
+        .await
+        .map_err(|e| e.to_string())?
+        .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub fn restart_app(app: AppHandle) {
+    app.restart();
 }

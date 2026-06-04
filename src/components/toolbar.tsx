@@ -5,6 +5,7 @@ import {
   Download,
   FolderOpen,
   MonitorCog,
+  RefreshCw,
   RotateCcw,
   Save,
   Trash2,
@@ -125,6 +126,18 @@ export function Toolbar({ m }: { m: DisplayManager }) {
             unsaved changes
           </Badge>
         ) : null}
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            m.refresh()
+            toast.info("Rescanned displays")
+          }}
+          title="Rescan connected displays"
+        >
+          <RefreshCw className="size-4" /> Rescan
+        </Button>
 
         <Button variant="ghost" size="sm" onClick={m.reset} disabled={!m.dirty}>
           <RotateCcw className="size-4" /> Reset

@@ -5,6 +5,7 @@ mod commands;
 mod hotplug;
 mod model;
 mod profiles;
+mod update;
 
 use tauri::webview::PageLoadEvent;
 use tauri_plugin_log::{Target, TargetKind};
@@ -71,6 +72,9 @@ pub fn run() {
             commands::save_profile,
             commands::delete_profile,
             commands::match_profile,
+            commands::check_update,
+            commands::apply_update,
+            commands::restart_app,
         ])
         .setup(|app| {
             hotplug::spawn(app.handle().clone());

@@ -1,6 +1,6 @@
 # Maintainer: Fábio Brasileiro <limpanomeam@gmail.com>
 pkgname=display-arranger
-pkgver=0.2.1
+pkgver=0.2.2
 pkgrel=1
 pkgdesc="A polished GUI monitor manager for dwm and other minimal window managers"
 arch=('x86_64')

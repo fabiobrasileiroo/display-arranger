@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { listen } from "@tauri-apps/api/event"
 import { toast } from "sonner"
 
@@ -20,8 +20,12 @@ export function useDisplayManager() {
   const [pendingRevert, setPendingRevert] = useState<number | null>(null)
   // Serialized "clean" layout; `dirty` compares the live draft against it.
   const [baseline, setBaseline] = useState<string>("")
+  // Auto-apply the matching saved profile when displays are hotplugged.
+  const [autoApply, setAutoApply] = useState(true)
+  const [update, setUpdate] = useState<ipc.UpdateInfo | null>(null)
+  const [updating, setUpdating] = useState(false)
 
-  const refresh = useCallback(async () => {
+  const refresh = useCallback(async (): Promise<Output[]> => {
     try {
       const outs = await ipc.queryOutputs()
       setOutputs(outs)
@@ -34,8 +38,10 @@ export function useDisplayManager() {
           : (outs.find((o) => o.connected)?.name ?? outs[0]?.name ?? null),
       )
       setError(null)
+      return outs
     } catch (e) {
       setError(String(e))
+      return []
     } finally {
       setLoading(false)
     }
@@ -49,14 +55,43 @@ export function useDisplayManager() {
     }
   }, [])
 
+  // Keep a live ref to autoApply so the event listener (registered once) reads
+  // the current value without re-subscribing.
+  const autoApplyRef = useRef(autoApply)
+  useEffect(() => {
+    autoApplyRef.current = autoApply
+  }, [autoApply])
+
   useEffect(() => {
     ipc.backendName().then(setBackend).catch(() => {})
     refresh()
     loadProfiles()
+    // Non-blocking update check against the latest GitHub release.
+    ipc
+      .checkUpdate()
+      .then((info) => {
+        if (info.updateAvailable) setUpdate(info)
+      })
+      .catch(() => {})
 
-    const unlistenChanged = listen("outputs-changed", () => {
-      toast.info("Displays changed — refreshing")
-      refresh()
+    const unlistenChanged = listen("outputs-changed", async () => {
+      const outs = await refresh()
+      const connected = outs.filter((o) => o.connected).map((o) => o.name)
+      // Try to auto-apply the saved profile that matches the new display set.
+      if (autoApplyRef.current) {
+        try {
+          const match = await ipc.matchProfile(connected)
+          if (match) {
+            await ipc.applyLayout(match.layout, 0)
+            await refresh()
+            toast.success(`Displays changed — applied "${match.name}"`)
+            return
+          }
+        } catch (e) {
+          console.error(e)
+        }
+      }
+      toast.info("Displays changed — refreshed")
     })
     const unlistenReverted = listen("layout-reverted", () => {
       toast.warning("Reverted to the previous layout")
@@ -173,7 +208,33 @@ export function useDisplayManager() {
     [loadProfiles],
   )
 
+  const runUpdate = useCallback(async () => {
+    if (!update) return
+    if (!update.canSelfUpdate) {
+      // deb/rpm/dev build — open the release page instead.
+      window.open(update.releaseUrl, "_blank")
+      return
+    }
+    setUpdating(true)
+    try {
+      await ipc.applyUpdate()
+      toast.success("Update installed — restarting…")
+      setTimeout(() => ipc.restartApp().catch(() => {}), 1200)
+    } catch (e) {
+      toast.error(`Update failed: ${e}`)
+      setUpdating(false)
+    }
+  }, [update])
+
+  const dismissUpdate = useCallback(() => setUpdate(null), [])
+
   return {
+    autoApply,
+    setAutoApply,
+    update,
+    updating,
+    runUpdate,
+    dismissUpdate,
     outputs,
     draft,
     selected,
