@@ -1,6 +1,7 @@
 <div align="center">
 
 # 🖥️ Display Arranger
+<img width="1918" height="1079" alt="preview-arr" src="https://github.com/user-attachments/assets/8dd53f96-475e-4878-87e1-4a4a76fe32dc" />
 
 **A fast, polished GUI to arrange your monitors — built for dwm, i3, bspwm and other minimal window managers.**
 
