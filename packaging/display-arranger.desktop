@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Display Arranger
+GenericName=Monitor Manager
+Comment=Arrange monitors, set resolution and rotation, save profiles
+Exec=display-arranger
+Icon=display-arranger
+Terminal=false
+Categories=Utility;Settings;HardwareSettings;
+Keywords=monitor;display;screen;xrandr;resolution;arandr;

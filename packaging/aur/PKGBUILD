@@ -1,0 +1,27 @@
+# Maintainer: Fábio Brasileiro <limpanomeam@gmail.com>
+pkgname=display-arranger
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="A polished GUI monitor manager for dwm and other minimal window managers"
+arch=('x86_64')
+url="https://github.com/fabiobrasileiroo/display-arranger"
+license=('MIT')
+depends=('webkit2gtk-4.1' 'gtk3' 'libxrandr' 'xorg-xrandr')
+makedepends=('rust' 'cargo' 'nodejs' 'npm' 'bun')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+  cd "$pkgname-$pkgver"
+  npm install
+  # Build the binary without the bundler (no AppImage tooling needed here).
+  npm run tauri build -- --no-bundle
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  install -Dm755 "src-tauri/target/release/$pkgname" "$pkgdir/usr/bin/$pkgname"
+  install -Dm644 "packaging/$pkgname.desktop" "$pkgdir/usr/share/applications/$pkgname.desktop"
+  install -Dm644 "app-icon.png" "$pkgdir/usr/share/icons/hicolor/512x512/apps/$pkgname.png"
+  install -Dm644 "LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

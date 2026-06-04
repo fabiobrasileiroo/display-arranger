@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "display-arranger",
+  "version": "0.1.0",
+  "identifier": "io.github.fabiobrasileiroo.display-arranger",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist",
+    "removeUnusedCommands": true
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "display-arranger",
+        "width": 1400,
+        "height": 918,
+        "center": true,
+        "visible": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["appimage", "deb", "rpm"],
+    "category": "Utility",
+    "shortDescription": "GUI monitor manager for dwm & friends",
+    "longDescription": "Display Arranger is a fast, polished GUI to arrange monitors on minimal window managers (dwm, i3, bspwm). Drag to position displays, set resolution/rate/rotation, save profiles, auto-apply on hotplug, and safely auto-revert bad modes.",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "linux": {
+      "deb": {
+        "depends": ["libwebkit2gtk-4.1-0", "libgtk-3-0"]
+      }
+    }
+  }
+}
