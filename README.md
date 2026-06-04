@@ -3,7 +3,7 @@
 # 🖥️ Display Arranger
 <img width="1918" height="1079" alt="preview-arr" src="https://github.com/user-attachments/assets/8dd53f96-475e-4878-87e1-4a4a76fe32dc" />
 
-**A fast, polished GUI to arrange your monitors — built for dwm, i3, bspwm and other minimal window managers.**
+**A fast, polished GUI to arrange your monitors — built for X11/xrandr today, with Wayland/dwl support planned.**
 
 Drag your screens into place, set resolution / refresh rate / rotation, save profiles, and never get stuck on a black screen again.
 
@@ -76,7 +76,7 @@ sudo dnf install ./display-arranger-*.x86_64.rpm
 yay -S display-arranger        # builds from source
 ```
 
-> Requires an **X11** session with `xrandr` (the default on dwm, i3, bspwm). Wayland (`wlr-randr`) support is planned.
+> Requires an **X11** session with `xrandr` today. Native Wayland/dwl support is planned, but not available in this release yet.
 
 ## CLI usage
 

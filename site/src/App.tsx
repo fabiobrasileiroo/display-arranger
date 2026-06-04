@@ -67,6 +67,7 @@ export default function App() {
             <Badge>MIT licensed</Badge>
             <Badge>Tauri + React</Badge>
             <Badge>X11 · xrandr</Badge>
+            <Badge>Wayland planned</Badge>
           </div>
           <h1 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">
             Arrange your monitors,{" "}
@@ -76,6 +77,10 @@ export default function App() {
             A fast, polished GUI monitor manager for <strong className="text-fg">dwm</strong>,{" "}
             <strong className="text-fg">i3</strong>, <strong className="text-fg">bspwm</strong> and
             other minimal window managers. No bloated desktop required.
+          </p>
+          <p className="mx-auto mt-4 max-w-2xl text-sm text-muted">
+            Native Wayland/dwl support is planned. This release still uses <strong className="text-fg">xrandr</strong>
+            on <strong className="text-fg">X11</strong>.
           </p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
             <a href={appimage ?? `${REPO_URL}/releases/latest`} target="_blank" rel="noreferrer">
@@ -122,7 +127,8 @@ export default function App() {
         <div className="mx-auto max-w-5xl px-5 py-24">
           <h2 className="text-center text-3xl font-bold tracking-tight">Install</h2>
           <p className="mx-auto mt-3 max-w-xl text-center text-muted">
-            Requires an X11 session with <code className="text-fg">xrandr</code> (default on dwm, i3, bspwm).
+            Requires an X11 session with <code className="text-fg">xrandr</code> today. Native Wayland/dwl support is
+            planned, not available in this release yet.
           </p>
           <div className="mt-12 grid gap-4 md:grid-cols-2">
             <Install title="AppImage (any distro)" lines={[
