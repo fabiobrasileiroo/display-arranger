@@ -110,6 +110,15 @@ The UI never talks to `xrandr` directly — it goes through a `DisplayBackend` t
 ## Tips
 
 - **Vertical / portrait monitor:** select the output and set **Rotation → left** (or **right**). The canvas rotates the screen and `xrandr` applies it.
+- **Giant mouse cursor on the bigger monitor?** This is an X11 cursor-size quirk (each monitor can report a different DPI), not the app. Fix it once by pinning the cursor size. Add to `~/.Xresources`:
+  ```
+  Xcursor.size: 24
+  ```
+  then `xrdb -merge ~/.Xresources`, and/or export it in your `~/.xprofile` / dwm startup:
+  ```sh
+  export XCURSOR_SIZE=24
+  xsetroot -cursor_name left_ptr   # re-applies a normal cursor
+  ```
 - **Optional window blur (frosted glass):** Display Arranger already uses translucent panels and dialogs. For a real blurred *window* on a bare WM, run a compositor like [`picom`](https://github.com/yshui/picom) and add a rule, e.g.:
   ```
   # ~/.config/picom/picom.conf

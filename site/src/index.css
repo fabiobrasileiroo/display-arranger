@@ -105,7 +105,68 @@ body {
   }
 }
 
+/* Gentle floating for the hero logo */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(-1.5deg);
+  }
+}
+
+/* Animated shifting gradient for accent text */
+.gradient-text {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-primary),
+    var(--color-fg),
+    var(--color-primary)
+  );
+  background-size: 220% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 220% center;
+  }
+}
+
+/* Subtle pulse for the primary download glow */
+.pulse-glow {
+  animation: pulseGlow 3.2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 oklch(0.68 0.16 295 / 0.35);
+  }
+  50% {
+    box-shadow: 0 0 36px 4px oklch(0.68 0.16 295 / 0.25);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .gradient-text,
+  .pulse-glow {
+    animation: none;
+  }
+
+  .gradient-text {
+    background-position: 0 center;
+  }
+
   html {
     scroll-behavior: auto;
   }

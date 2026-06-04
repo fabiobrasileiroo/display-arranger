@@ -96,7 +96,7 @@ export default function App() {
       {/* Hero */}
       <section id="top" className="hero-grid border-b border-border" data-reveal style={reveal(0)}>
         <div className="mx-auto max-w-5xl px-5 py-24 text-center">
-          <img src={asset("logo.svg")} alt="Display Arranger" className="mx-auto mb-8 size-24 rounded-2xl shadow-2xl shadow-primary/20" />
+          <img src={asset("logo.svg")} alt="Display Arranger" className="animate-float mx-auto mb-8 size-24 rounded-2xl shadow-2xl shadow-primary/20" />
           <div className="mb-5 flex justify-center gap-2">
             <Badge>MIT licensed</Badge>
             <Badge>Tauri + React</Badge>
@@ -105,7 +105,7 @@ export default function App() {
           </div>
           <h1 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">
             Arrange your monitors,{" "}
-            <span className="bg-gradient-to-r from-primary to-fg bg-clip-text text-transparent">beautifully</span>.
+            <span className="gradient-text">beautifully</span>.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-muted">
             A fast, polished GUI monitor manager for <strong className="text-fg">dwm</strong>,{" "}
@@ -118,7 +118,7 @@ export default function App() {
           </p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
             <a href={appimage ?? `${REPO_URL}/releases/latest`} target="_blank" rel="noreferrer">
-              <Button size="lg"><Download className="size-5" /> Download AppImage</Button>
+              <Button size="lg" className="pulse-glow"><Download className="size-5" /> Download AppImage</Button>
             </a>
             <a href="#install">
               <Button variant="outline" size="lg">Install options <ArrowRight className="size-4" /></Button>

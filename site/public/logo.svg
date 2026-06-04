@@ -28,10 +28,4 @@
   <!-- Bottom monitor (below primary) -->
   <rect x="232" y="570" width="402" height="154" rx="26" fill="#1d2030" stroke="#3a3f57" stroke-width="3"/>
   <rect x="266" y="602" width="334" height="90" rx="10" fill="#2a2f45"/>
-
-  <!-- Drag/arrange cursor accent -->
-  <g stroke="#ffffff" stroke-opacity="0.55" stroke-width="14" stroke-linecap="round">
-    <path d="M512 760 v92"/>
-    <path d="M466 806 h92"/>
-  </g>
 </svg>

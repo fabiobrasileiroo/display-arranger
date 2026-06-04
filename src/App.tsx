@@ -2,9 +2,11 @@ import { useDisplayManager } from "@/hooks/use-display-manager"
 import { Toolbar } from "@/components/toolbar"
 import { MonitorCanvas } from "@/components/canvas/monitor-canvas"
 import { OutputPanel } from "@/components/controls/output-panel"
+import { ProfilesPanel } from "@/components/profiles/profiles-panel"
 import { RevertCountdown } from "@/components/revert-countdown"
 import { Toaster } from "@/components/ui/sonner"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { Separator } from "@/components/ui/separator"
 
 export default function App() {
   const m = useDisplayManager()
@@ -37,7 +39,7 @@ export default function App() {
 
         <aside className="min-h-0 border-l">
           <ScrollArea className="h-full">
-            <div className="p-4">
+            <div className="flex flex-col gap-4 p-4">
               <OutputPanel
                 outputs={m.outputs}
                 draft={m.draft}
@@ -47,6 +49,8 @@ export default function App() {
                 selectedConfig={m.selectedConfig}
                 updateConfig={m.updateConfig}
               />
+              <Separator />
+              <ProfilesPanel m={m} />
             </div>
           </ScrollArea>
         </aside>
