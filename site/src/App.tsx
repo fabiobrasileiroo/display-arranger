@@ -1,3 +1,4 @@
+import { useEffect, type CSSProperties } from "react"
 import {
   ArrowRight,
   Clock,
@@ -25,6 +26,10 @@ import {
 
 const asset = (p: string) => `${import.meta.env.BASE_URL}${p}`
 
+const reveal = (delay = 0): CSSProperties => ({
+  "--delay": `${delay}ms`,
+} as CSSProperties)
+
 const FEATURES = [
   { icon: MousePointerClick, title: "Drag to arrange", desc: "Position your monitors visually on a canvas, with edge snapping." },
   { icon: RotateCcw, title: "Safe auto-revert", desc: "A bad mode reverts after 15s — never get stuck on a black screen." },
@@ -39,8 +44,37 @@ export default function App() {
   const latest = releases[0]
   const appimage = pickAppImage(latest)
 
+  useEffect(() => {
+    const targets = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"))
+
+    if (targets.length === 0) {
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) {
+            continue
+          }
+
+          entry.target.setAttribute("data-visible", "true")
+          observer.unobserve(entry.target)
+        }
+      },
+      {
+        threshold: 0.18,
+        rootMargin: "0px 0px -10% 0px",
+      },
+    )
+
+    targets.forEach((target) => observer.observe(target))
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <div className="min-h-svh">
+    <div className="page-shell min-h-svh">
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b border-border bg-bg/70 backdrop-blur-md">
         <nav className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3">
@@ -60,7 +94,7 @@ export default function App() {
       </header>
 
       {/* Hero */}
-      <section id="top" className="hero-grid border-b border-border">
+      <section id="top" className="hero-grid border-b border-border" data-reveal style={reveal(0)}>
         <div className="mx-auto max-w-5xl px-5 py-24 text-center">
           <img src={asset("logo.svg")} alt="Display Arranger" className="mx-auto mb-8 size-24 rounded-2xl shadow-2xl shadow-primary/20" />
           <div className="mb-5 flex justify-center gap-2">
@@ -99,21 +133,21 @@ export default function App() {
       </section>
 
       {/* Screenshot */}
-      <section className="mx-auto -mt-10 max-w-4xl px-5">
+      <section className="mx-auto -mt-10 max-w-4xl px-5" data-reveal style={reveal(120)}>
         <div className="overflow-hidden rounded-2xl border border-border bg-bg-soft/60 shadow-2xl shadow-black/40">
           <img src={asset("screenshot.png")} alt="Display Arranger interface" className="w-full" />
         </div>
       </section>
 
       {/* Features */}
-      <section id="features" className="mx-auto max-w-5xl px-5 py-24">
+      <section id="features" className="mx-auto max-w-5xl px-5 py-24" data-reveal style={reveal(160)}>
         <h2 className="text-center text-3xl font-bold tracking-tight">Everything you need, nothing you don't</h2>
         <p className="mx-auto mt-3 max-w-xl text-center text-muted">
           Built for people who live in a tiling window manager and just want their screens to behave.
         </p>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((f) => (
-            <Card key={f.title}>
+          {FEATURES.map((f, index) => (
+            <Card key={f.title} data-reveal style={reveal(220 + index * 70)}>
               <f.icon className="size-6 text-primary" />
               <h3 className="mt-3 font-semibold">{f.title}</h3>
               <p className="mt-1 text-sm text-muted">{f.desc}</p>
@@ -123,7 +157,7 @@ export default function App() {
       </section>
 
       {/* Install */}
-      <section id="install" className="border-y border-border bg-bg-soft/20">
+      <section id="install" className="border-y border-border bg-bg-soft/20" data-reveal style={reveal(180)}>
         <div className="mx-auto max-w-5xl px-5 py-24">
           <h2 className="text-center text-3xl font-bold tracking-tight">Install</h2>
           <p className="mx-auto mt-3 max-w-xl text-center text-muted">
@@ -131,19 +165,19 @@ export default function App() {
             planned, not available in this release yet.
           </p>
           <div className="mt-12 grid gap-4 md:grid-cols-2">
-            <Install title="AppImage (any distro)" lines={[
+            <Install delay={0} title="AppImage (any distro)" lines={[
               "chmod +x display-arranger_*_amd64.AppImage",
               "./display-arranger_*_amd64.AppImage",
             ]} />
-            <Install title="Install as a native app" lines={[
+            <Install delay={70} title="Install as a native app" lines={[
               "curl -fsSL https://raw.githubusercontent.com/\\",
               "  fabiobrasileiroo/display-arranger/main/\\",
               "  scripts/install-appimage.sh | sh -s -- *.AppImage",
             ]} />
-            <Install title="Debian / Ubuntu" lines={["sudo apt install ./display-arranger_*_amd64.deb"]} />
-            <Install title="Fedora / openSUSE" lines={["sudo dnf install ./display-arranger-*.x86_64.rpm"]} />
-            <Install title="Arch / Manjaro (AUR)" lines={["yay -S display-arranger"]} />
-            <Install title="Drive it from a keybind (dwm/i3)" lines={[
+            <Install delay={140} title="Debian / Ubuntu" lines={["sudo apt install ./display-arranger_*_amd64.deb"]} />
+            <Install delay={210} title="Fedora / openSUSE" lines={["sudo dnf install ./display-arranger-*.x86_64.rpm"]} />
+            <Install delay={280} title="Arch / Manjaro (AUR)" lines={["yay -S display-arranger"]} />
+            <Install delay={350} title="Drive it from a keybind (dwm/i3)" lines={[
               "display-arranger apply triple",
               "display-arranger apply --auto",
             ]} />
@@ -152,7 +186,7 @@ export default function App() {
       </section>
 
       {/* Releases / changelog */}
-      <section id="releases" className="mx-auto max-w-5xl px-5 py-24">
+      <section id="releases" className="mx-auto max-w-5xl px-5 py-24" data-reveal style={reveal(220)}>
         <h2 className="text-center text-3xl font-bold tracking-tight">Releases &amp; changelog</h2>
         <p className="mx-auto mt-3 max-w-xl text-center text-muted">Pulled live from GitHub.</p>
 
@@ -168,7 +202,7 @@ export default function App() {
             </Card>
           ) : (
             releases.map((r, i) => (
-              <Card key={r.tag_name}>
+              <Card key={r.tag_name} data-reveal style={reveal(120 + i * 80)}>
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <Layers className="size-5 text-primary" />
@@ -206,7 +240,7 @@ export default function App() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border">
+      <footer className="border-t border-border" data-reveal style={reveal(260)}>
         <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 px-5 py-10 text-sm text-muted sm:flex-row">
           <span className="flex items-center gap-2">
             <MonitorCog className="size-4 text-primary" /> Display Arranger — MIT © Fábio Brasileiro
@@ -220,9 +254,9 @@ export default function App() {
   )
 }
 
-function Install({ title, lines }: { title: string; lines: string[] }) {
+function Install({ title, lines, delay = 0 }: { title: string; lines: string[]; delay?: number }) {
   return (
-    <Card>
+    <Card data-reveal style={reveal(delay)}>
       <h3 className="font-semibold">{title}</h3>
       <pre className="mt-3 overflow-auto rounded-lg border border-border bg-bg/60 p-3 text-xs leading-relaxed text-muted">
         {lines.join("\n")}
