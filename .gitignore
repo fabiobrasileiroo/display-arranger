@@ -25,3 +25,6 @@ dist-ssr
 
 # old bun binary lockfile (we use text bun.lock)
 bun.lockb
+
+# TS incremental build info
+*.tsbuildinfo

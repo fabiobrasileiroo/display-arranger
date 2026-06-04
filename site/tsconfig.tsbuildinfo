@@ -1,1 +1,0 @@
-{"root":["./src/App.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/reveal.tsx","./src/components/terminal.tsx","./src/components/ui/button.tsx","./src/components/ui/card.tsx","./src/lib/github.ts","./src/lib/utils.ts","./vite.config.ts"],"version":"5.7.3"}
