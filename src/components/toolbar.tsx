@@ -1,17 +1,27 @@
 import { useState } from "react"
-import { Check, Download, FolderOpen, MonitorCog, RotateCcw, Save } from "lucide-react"
+import {
+  Check,
+  ChevronDown,
+  Download,
+  FolderOpen,
+  MonitorCog,
+  RotateCcw,
+  Save,
+  Trash2,
+} from "lucide-react"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import {
   Dialog,
   DialogContent,
@@ -50,7 +60,7 @@ export function Toolbar({ m }: { m: DisplayManager }) {
   }
 
   return (
-    <header className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
+    <header className="flex flex-wrap items-center gap-2 border-b bg-background/70 px-4 py-3 backdrop-blur-md supports-backdrop-filter:bg-background/50">
       <div className="mr-2 flex items-center gap-2">
         <MonitorCog className="size-5 text-primary" />
         <span className="font-semibold">Display Arranger</span>
@@ -62,36 +72,52 @@ export function Toolbar({ m }: { m: DisplayManager }) {
       </div>
 
       {/* Profiles */}
-      <Select
-        value=""
-        onValueChange={(v) => {
-          const p = m.profiles.find((p) => p.name === v)
-          if (p) m.applyProfile(p)
-        }}
-      >
-        <SelectTrigger className="w-[170px]">
-          <FolderOpen className="size-4" />
-          <SelectValue placeholder="Load profile" />
-        </SelectTrigger>
-        <SelectContent>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="sm">
+            <FolderOpen className="size-4" />
+            Load profile
+            <ChevronDown className="size-4 opacity-60" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-56">
+          <DropdownMenuLabel>Saved profiles</DropdownMenuLabel>
+          <DropdownMenuSeparator />
           {m.profiles.length === 0 ? (
             <div className="px-2 py-1.5 text-xs text-muted-foreground">
-              No profiles yet
+              No profiles yet — arrange your screens and hit “Save profile”.
             </div>
           ) : (
             m.profiles.map((p) => (
-              <SelectItem key={p.name} value={p.name}>
-                <span className="flex items-center justify-between gap-2">
-                  {p.name}
+              <DropdownMenuItem
+                key={p.name}
+                className="flex items-center justify-between gap-2"
+                onSelect={() => m.applyProfile(p)}
+              >
+                <span className="flex flex-col">
+                  <span className="font-medium">{p.name}</span>
                   <span className="text-[10px] text-muted-foreground">
                     {p.signature.length} screen{p.signature.length === 1 ? "" : "s"}
                   </span>
                 </span>
-              </SelectItem>
+                <span
+                  role="button"
+                  tabIndex={-1}
+                  aria-label={`Delete ${p.name}`}
+                  className="rounded p-1 text-muted-foreground hover:bg-destructive/15 hover:text-destructive"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    m.removeProfile(p.name)
+                  }}
+                >
+                  <Trash2 className="size-3.5" />
+                </span>
+              </DropdownMenuItem>
             ))
           )}
-        </SelectContent>
-      </Select>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       <div className="ml-auto flex items-center gap-2">
         {m.dirty ? (

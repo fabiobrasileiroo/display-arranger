@@ -6,8 +6,9 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  // dist (frontend build) and src-tauri (Rust crate + generated build assets).
-  globalIgnores(['dist', 'src-tauri']),
+  // dist (frontend build), src-tauri (Rust crate + generated assets), and the
+  // standalone GitHub Pages site (has its own toolchain).
+  globalIgnores(['dist', 'src-tauri', 'site']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [

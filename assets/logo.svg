@@ -1,0 +1,37 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1024" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#13151f"/>
+      <stop offset="1" stop-color="#0a0b11"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="232" y1="300" x2="640" y2="560" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8b7bff"/>
+      <stop offset="1" stop-color="#6d5cf0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- App tile background -->
+  <rect x="0" y="0" width="1024" height="1024" rx="224" fill="url(#bg)"/>
+  <rect x="8" y="8" width="1008" height="1008" rx="216" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="2"/>
+
+  <!-- Tiling-WM style monitor arrangement -->
+  <!-- Primary monitor (accent) -->
+  <rect x="232" y="300" width="402" height="246" rx="26" fill="url(#accent)"/>
+  <rect x="232" y="300" width="402" height="246" rx="26" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="3"/>
+  <!-- primary star dot -->
+  <circle cx="278" cy="346" r="13" fill="#ffd35c"/>
+
+  <!-- Side monitor -->
+  <rect x="658" y="300" width="246" height="246" rx="26" fill="#1d2030" stroke="#3a3f57" stroke-width="3"/>
+  <rect x="690" y="332" width="182" height="120" rx="10" fill="#2a2f45"/>
+
+  <!-- Bottom monitor (below primary) -->
+  <rect x="232" y="570" width="402" height="154" rx="26" fill="#1d2030" stroke="#3a3f57" stroke-width="3"/>
+  <rect x="266" y="602" width="334" height="90" rx="10" fill="#2a2f45"/>
+
+  <!-- Drag/arrange cursor accent -->
+  <g stroke="#ffffff" stroke-opacity="0.55" stroke-width="14" stroke-linecap="round">
+    <path d="M512 760 v92"/>
+    <path d="M466 806 h92"/>
+  </g>
+</svg>
