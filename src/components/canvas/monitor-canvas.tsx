@@ -109,7 +109,7 @@ export function MonitorCanvas({ configs, selected, onSelect, onMove }: Props) {
         </div>
       ) : null}
 
-      {enabled.map((c) => {
+      {enabled.map((c, i) => {
         const s = toScreen(c)
         const isSelected = c.name === selected
         return (
@@ -120,16 +120,27 @@ export function MonitorCanvas({ configs, selected, onSelect, onMove }: Props) {
             style={{
               left: s.left,
               top: s.top,
-              width: Math.max(s.width, 40),
-              height: Math.max(s.height, 30),
+              width: Math.max(s.width, 56),
+              height: Math.max(s.height, 44),
             }}
             className={cn(
-              "absolute flex cursor-grab touch-none select-none flex-col items-center justify-center rounded-lg border-2 text-center shadow-sm transition-colors active:cursor-grabbing",
+              "absolute flex cursor-grab touch-none select-none flex-col items-center justify-center rounded-lg border-2 text-center shadow-sm backdrop-blur-sm transition-colors active:cursor-grabbing",
               isSelected
                 ? "border-primary bg-primary/15 ring-2 ring-primary/40"
-                : "border-border bg-card hover:border-primary/60",
+                : "border-border bg-card/80 hover:border-primary/60",
             )}
           >
+            {/* Number badge so you know which screen you're dragging */}
+            <span
+              className={cn(
+                "absolute left-1.5 top-1.5 flex size-5 items-center justify-center rounded-md text-[11px] font-bold tabular-nums",
+                isSelected
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-muted-foreground",
+              )}
+            >
+              {i + 1}
+            </span>
             <span className="flex items-center gap-1 px-1 text-xs font-semibold leading-tight">
               {c.primary ? (
                 <Star className="size-3 fill-current text-amber-400" />

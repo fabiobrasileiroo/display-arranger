@@ -56,13 +56,26 @@ export function OutputPanel({
     })
   }
 
+  // Same numbering as the canvas: index among the enabled outputs.
+  const enabledOrder = draft.filter((c) => c.enabled && c.mode).map((c) => c.name)
+  const numberOf = (name: string) => {
+    const i = enabledOrder.indexOf(name)
+    return i >= 0 ? i + 1 : null
+  }
+
+  // Only connected outputs are actionable; disconnected ones are hidden
+  // (ghost cleanup still happens automatically on Apply).
+  const connected = outputs.filter((o) => o.connected)
+  const hiddenCount = outputs.length - connected.length
+
   return (
     <div className="flex h-full flex-col gap-3">
       {/* Output selector list */}
       <div className="flex flex-col gap-1">
-        {outputs.map((o) => {
+        {connected.map((o) => {
           const cfg = draft.find((c) => c.name === o.name)
           const active = o.name === selected
+          const num = numberOf(o.name)
           return (
             <button
               key={o.name}
@@ -76,8 +89,17 @@ export function OutputPanel({
               )}
             >
               <span className="flex items-center gap-2">
-                {cfg?.enabled ? (
-                  <Monitor className="size-4 text-primary" />
+                {num ? (
+                  <span
+                    className={cn(
+                      "flex size-5 items-center justify-center rounded-md text-[11px] font-bold tabular-nums",
+                      active
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground",
+                    )}
+                  >
+                    {num}
+                  </span>
                 ) : (
                   <MonitorOff className="size-4 text-muted-foreground" />
                 )}
@@ -86,14 +108,21 @@ export function OutputPanel({
                   <Star className="size-3 fill-current text-amber-400" />
                 ) : null}
               </span>
-              {!o.connected ? (
+              {cfg?.enabled ? (
+                <Monitor className="size-4 text-primary" />
+              ) : (
                 <Badge variant="outline" className="text-[10px]">
-                  disconnected
+                  off
                 </Badge>
-              ) : null}
+              )}
             </button>
           )
         })}
+        {hiddenCount > 0 ? (
+          <p className="px-1 pt-1 text-[10px] text-muted-foreground">
+            {hiddenCount} disconnected output{hiddenCount === 1 ? "" : "s"} hidden
+          </p>
+        ) : null}
       </div>
 
       <Separator />

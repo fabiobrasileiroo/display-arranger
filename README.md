@@ -34,17 +34,28 @@ Built with **Tauri + React + shadcn/ui** — a single, small native binary (no b
 
 ## Screenshots
 
-> _Add a screenshot to `screenshots/main.png`._
+![Display Arranger](screenshots/main.png)
+
+🌐 **Project site:** https://fabiobrasileiroo.github.io/display-arranger/
 
 ## Install
 
 ### AppImage (any distro)
 
-Download the latest `*.AppImage` from [Releases](https://github.com/fabiobrasileiroo/display-arranger/releases), then:
+Download the latest `*.AppImage` from [Releases](https://github.com/fabiobrasileiroo/display-arranger/releases), make it executable, and run it:
 
 ```sh
-chmod +x display-arranger_*_amd64.AppImage
+chmod +x display-arranger_*_amd64.AppImage     # note: +x adds execute (-x removes it!)
 ./display-arranger_*_amd64.AppImage
+```
+
+**Install it as a native app** (adds it to `~/.local/bin` + your app menu/rofi/dmenu):
+
+```sh
+# grab the helper script from the repo, or run it from a clone
+curl -fsSL https://raw.githubusercontent.com/fabiobrasileiroo/display-arranger/main/scripts/install-appimage.sh | sh -s -- display-arranger_*_amd64.AppImage
+# then just:
+display-arranger
 ```
 
 ### Debian / Ubuntu
@@ -96,6 +107,16 @@ Example dwm `config.h` binding:
 
 The UI never talks to `xrandr` directly — it goes through a `DisplayBackend` trait, so a Wayland backend can be added without touching the frontend.
 
+## Tips
+
+- **Vertical / portrait monitor:** select the output and set **Rotation → left** (or **right**). The canvas rotates the screen and `xrandr` applies it.
+- **Optional window blur (frosted glass):** Display Arranger already uses translucent panels and dialogs. For a real blurred *window* on a bare WM, run a compositor like [`picom`](https://github.com/yshui/picom) and add a rule, e.g.:
+  ```
+  # ~/.config/picom/picom.conf
+  blur-method = "dual_kawase";
+  blur-background = true;
+  ```
+
 ## Development
 
 ```sh
@@ -111,10 +132,10 @@ cd src-tauri && cargo test && cargo clippy   # backend tests + lints
 Building bundles locally:
 
 ```sh
-npm run tauri build
+bun run tauri build
 # If AppImage bundling fails with "failed to run linuxdeploy", your environment
 # can't FUSE-mount AppImages — prefix with APPIMAGE_EXTRACT_AND_RUN=1:
-APPIMAGE_EXTRACT_AND_RUN=1 npm run tauri build
+APPIMAGE_EXTRACT_AND_RUN=1 bun run tauri build
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the project layout and guidelines.
